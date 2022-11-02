@@ -1,21 +1,23 @@
+using TestProject1.utility;
+
 namespace vg.model.entity.dynamicEntity.player
 {
     public class BasePlayer : IPlayer
     {
         ///Maximum player life.
-        public const int PLAYER_MAX_LIFE = 6;
+        public static int PLAYER_MAX_LIFE = 6;
   
         ///Default player speed.
-        public const V2D DEFAULT_PLAYER_SPEED = new V2D(1, 1);
+        public static V2D DEFAULT_PLAYER_SPEED = new V2D(1, 1);
         
         ///Default player radius shape.
-        public const int DEFAULT_PLAYER_RADIUS = 2;
+        public static int DEFAULT_PLAYER_RADIUS = 2;
 
         ///Default state of capability to shoot of player.
-        public const bool DEFAULT_SHOOT_CAPABILITY = false;
+        public static bool DEFAULT_SHOOT_CAPABILITY = false;
         
         ///Default state of capability to shoot of player.
-        const Direction DEFAULT_DIRECTION = Direction.NONE;
+        public static Direction DEFAULT_DIRECTION = Direction.NONE;
         
         /// Life of player.
         private int _life;
@@ -33,7 +35,7 @@ namespace vg.model.entity.dynamicEntity.player
         private Direction lastMovingDir;
 
         /// Tail created by player while moves in map.
-        private Tail tail;
+        private ITail tail;
         
         /// Player shield.
         private Shield shield;
@@ -63,7 +65,7 @@ namespace vg.model.entity.dynamicEntity.player
         private BasePlayer(V2D position, int life, V2D speed, Shield shield) {
             super(position, speed, DEFAULT_PLAYER_RADIUS, Shape.CIRCLE, MassTier.NOCOLLISION);
             this._life = life;
-            this.tail = TailImpl.emptyTail();
+            this.tail = TailImpl.EmptyTail();
             this.shield = shield;
             this.canShoot = DEFAULT_SHOOT_CAPABILITY;
             this.speedImproved = Optional.absent();
@@ -71,21 +73,26 @@ namespace vg.model.entity.dynamicEntity.player
         }
 
         public void DecLife() {
-            this._life = this.life > 0 ? this.life - 1 : 0;
+            this._life = this._life > 0 ? this._life - 1 : 0;
             if (!this.shield.isActive()) {
                 this.shield = Shield.create((double) Shield.DEFAULT_DURATION/2, true);
             }
         }
         
         public void IncLife() {
-            this._life = this.life + 1;
+            this._life = _life + 1;
         }
         
         public int GetLife() {
             return this._life;
         }
-        
-        public Tail GetTail() {
+
+        public ITail GetTail() {
+            return this.tail;
+        }
+
+        ITail IPlayer.GetTail()
+        {
             return this.tail;
         }
 
@@ -96,8 +103,8 @@ namespace vg.model.entity.dynamicEntity.player
         public Shield GetShield() {
             return this.shield;
         }
-        
-        public void ChangeDirection(Direction dir, boolean isOnBorder) {
+
+        public void ChangeDirection(Direction dir, bool isOnBorder) {
             if (lastMovingDir == null) {
                 lastMovingDir = dir;
             }
@@ -121,19 +128,20 @@ namespace vg.model.entity.dynamicEntity.player
         }
         
         public void Move() {
-            V2D newPos = this.getPosition().sum(this.getSpeed().mul(this.direction.getVector()));
-            if (!this.tail.getCoordinates().contains(newPos)) {
-                setPosition(newPos);
+            V2D newPos = this.GetPosition().sum(this.GetSpeed().Mul(this.direction.GetVector()));
+            if (!this.tail.GetCoordinates().Contains(newPos)) {
+                this.SetPosition(newPos);
             }
         }
 
-        public void EnableSpeedUp(V2D speed) {
+        public void EnableSpeedUp(V2D speed)
+        {
             /*
             * In order to not change direction of move by speed vector
             * is checked if coordinates are negative
             */
-            if (!this.speedImproved.isPresent() && speed.getX() >= 0 && speed.getY() > 0) {
-                this.speedImproved = Optional.of(this.getSpeed().sum(speed));
+            if (!this.speedImproved.isPresent() && speed.X >= 0 && speed.Y > 0) {
+                this.speedImproved = Optional.of(this.GetSpeed().Sum(speed));
             }
         }
         

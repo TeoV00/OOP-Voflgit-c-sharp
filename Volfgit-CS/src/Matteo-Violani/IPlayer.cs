@@ -1,4 +1,6 @@
 
+using TestProject1.utility;
+
 namespace vg.model.entity.dynamicEntity.player
 {
     public interface IPlayer
@@ -60,7 +62,7 @@ namespace vg.model.entity.dynamicEntity.player
         /// </summary>
         /// <param name="direction">new direction</param>
         /// <param name="isOnBorder">flag if player is on border</param> 
-        void ChangeDirection(Direction direction, boolean isOnBorder);
+        void ChangeDirection(Direction direction, bool isOnBorder);
 
         /// <summary>
         /// Current player direction.
@@ -72,7 +74,7 @@ namespace vg.model.entity.dynamicEntity.player
         /// Get player tail.
         /// </summary>
         /// <returns>Tail of player</returns> 
-        Tail GetTail();
+        ITail GetTail();
 
         /// <summary>
         /// Set new player's shield.
