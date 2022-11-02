@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Volfig-CS", "Volfig-CS\Volfig-CS.csproj", "{EFFCC16B-3F31-4F05-93CD-E96F1BBF7658}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFFCC16B-3F31-4F05-93CD-E96F1BBF7658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFFCC16B-3F31-4F05-93CD-E96F1BBF7658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFFCC16B-3F31-4F05-93CD-E96F1BBF7658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFFCC16B-3F31-4F05-93CD-E96F1BBF7658}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
