@@ -7,7 +7,7 @@ namespace vg.model.entity.dynamicEntity.player;
 /// to it (Circle or Square). It has {@link #radius} that defines
 /// show large the entity is.
 /// </summary>
-public abstract class ShapedEntity
+public abstract class ShapedEntity : IEntity
 {
     /**
      * 2D coordinates to keep current entity position in map.

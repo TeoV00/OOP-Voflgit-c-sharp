@@ -3,7 +3,7 @@ using vg.utility;
 
 namespace vg.model.entity.dynamicEntity.player
 {
-    public interface IPlayer
+    public interface IPlayer : IEntity
     {
         /// <summary>
         /// Decrement player's life of one unit.
