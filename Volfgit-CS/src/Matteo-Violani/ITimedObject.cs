@@ -1,4 +1,4 @@
-namespace vg.model.entity.dynamicEntity.player;
+namespace vg.model.timedObject;
 
 public interface ITimedObject
 {

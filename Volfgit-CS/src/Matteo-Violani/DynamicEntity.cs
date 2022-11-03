@@ -1,6 +1,7 @@
+using vg.model.entity.dynamicEntity.player;
 using vg.utility;
 
-namespace vg.model.entity.dynamicEntity.player;
+namespace vg.model.entity.dynamicEntity;
 
 public abstract class DynamicEntity : ShapedEntity
 {
