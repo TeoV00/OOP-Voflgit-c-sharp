@@ -1,8 +1,8 @@
-using TestProject1.utility;
+using vg.utility;
 
 namespace vg.model.entity.dynamicEntity.player
 {
-    public class BasePlayer : IPlayer
+    public class BasePlayer : DynamicEntity, IPlayer 
     {
         ///Maximum player life.
         public const int PlayerMaxLife = 6;
@@ -62,8 +62,8 @@ namespace vg.model.entity.dynamicEntity.player
                     Shield.Create(Shield.DefaultDuration, true));
         }
 
-        private BasePlayer(V2D position, int life, V2D speed, Shield shield){
-            base(position, speed, DefaultPlayerRadius, Shape.Circle, MassTier.Nocollision);
+        private BasePlayer(V2D position, int life, V2D speed, Shield shield) 
+            : base(position, speed, DefaultPlayerRadius, Shape.Circle, MassTier.Nocollision){
             this._life = life;
             this._tail = TailImpl.EmptyTail();
             this._shield = shield;
@@ -78,21 +78,17 @@ namespace vg.model.entity.dynamicEntity.player
                 this._shield = Shield.Create((double) Shield.DefaultDuration/2, true);
             }
         }
-        
-        public void IncLife() {
+
+        public void IncLife()
+        {
             this._life = _life + 1;
         }
-        
+
         public int GetLife() {
             return this._life;
         }
 
         public ITail GetTail() {
-            return this._tail;
-        }
-
-        ITail IPlayer.GetTail()
-        {
             return this._tail;
         }
 
@@ -127,8 +123,8 @@ namespace vg.model.entity.dynamicEntity.player
             return this._direction;
         }
         
-        public void Move() {
-            V2D newPos = this.GetPosition().Sum(this.GetSpeed().Mul(Direction.GetVector(this._direction)));
+        public new void Move() {
+            var newPos = GetPosition().Sum(this.GetSpeed().Mul(Direction.GetVector(this._direction)));
             if (!this._tail.GetCoordinates().Contains(newPos)) {
                 this.SetPosition(newPos);
             }
@@ -161,7 +157,7 @@ namespace vg.model.entity.dynamicEntity.player
             this._canShoot = false;
         }
 
-        public V2D GetSpeed() {
+        public new V2D GetSpeed() {
             // if speedUp is set return it else return original speed
             if (this._speedImproved.HasValue) {
                 return _speedImproved.Value;
@@ -170,12 +166,11 @@ namespace vg.model.entity.dynamicEntity.player
             }
         }
         
-        public void AfterCollisionAction(MassTier other) {
-            base.afterCollisionAction(other);
-            if (this.GetMassTier().compareTo(other) > MassTier.Nocollision.ordinal()) {
+        public new void AfterCollisionAction(MassTier other) {
+            base.AfterCollisionAction(other);
+            if (this.GetMassTier().CompareTo(other) > (int) MassTier.Nocollision) {
                 DecLife();
             }
         }
-
     }
 }

@@ -1,4 +1,4 @@
-namespace TestProject1.utility;
+namespace vg.utility;
 
 public enum EDirection
 {
