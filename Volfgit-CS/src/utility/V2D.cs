@@ -80,9 +80,11 @@ public struct V2D
     /// </returns>
     public bool IsAdj(V2D other) {
         //TODO: understand how use stream in c#
-        return Stream.of(-1, 1)
+        /*return Stream.of(-1, 1)
             .flatMap(e -> Stream.of(new V2D(e, 0), new V2D(0, e)))
             .anyMatch(e -> e.equals(other.Sum(this.ScalarMul(-1))));
+        */
+        return false;
     }
 
     public new string ToString()

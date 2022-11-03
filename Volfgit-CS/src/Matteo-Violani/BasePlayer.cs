@@ -35,7 +35,7 @@ namespace vg.model.entity.dynamicEntity.player
         private EDirection _lastMovingDir;
 
         /// Tail created by player while moves in map.
-        private ITail _tail;
+        private readonly ITail _tail;
         
         /// Player shield.
         private Shield _shield;
@@ -62,8 +62,8 @@ namespace vg.model.entity.dynamicEntity.player
                     Shield.Create(Shield.DefaultDuration, true));
         }
 
-        private BasePlayer(V2D position, int life, V2D speed, Shield shield) {
-            super(position, speed, DefaultPlayerRadius, Shape.CIRCLE, MassTier.NOCOLLISION);
+        private BasePlayer(V2D position, int life, V2D speed, Shield shield){
+            base(position, speed, DefaultPlayerRadius, Shape.Circle, MassTier.Nocollision);
             this._life = life;
             this._tail = TailImpl.EmptyTail();
             this._shield = shield;
@@ -166,13 +166,13 @@ namespace vg.model.entity.dynamicEntity.player
             if (this._speedImproved.HasValue) {
                 return _speedImproved.Value;
             } else {
-                return super.GetSpeed();
+                return base.GetSpeed();
             }
         }
         
         public void AfterCollisionAction(MassTier other) {
-            super.afterCollisionAction(other);
-            if (this.GetMassTier().compareTo(other) > MassTier.NOCOLLISION.ordinal()) {
+            base.afterCollisionAction(other);
+            if (this.GetMassTier().compareTo(other) > MassTier.Nocollision.ordinal()) {
                 DecLife();
             }
         }
