@@ -1,6 +1,6 @@
 namespace vg.utility;
 
-public class V2DUtility
+public static class V2DUtility
 {
     /// <summary>
     /// From a list of coordinates extract vertex points.
