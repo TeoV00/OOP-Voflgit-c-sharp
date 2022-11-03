@@ -5,19 +5,19 @@ namespace vg.model.entity.dynamicEntity.player
     public class BasePlayer : IPlayer
     {
         ///Maximum player life.
-        public static int PLAYER_MAX_LIFE = 6;
+        public const int PlayerMaxLife = 6;
   
         ///Default player speed.
-        public static V2D DEFAULT_PLAYER_SPEED = new V2D(1, 1);
+        public static readonly V2D DefaultPlayerSpeed = new V2D(1, 1);
         
         ///Default player radius shape.
-        public static int DEFAULT_PLAYER_RADIUS = 2;
+        public const int DefaultPlayerRadius = 2;
 
         ///Default state of capability to shoot of player.
-        public static bool DEFAULT_SHOOT_CAPABILITY = false;
+        public const bool DefaultShootCapability = false;
         
         ///Default state of capability to shoot of player.
-        public static Direction DEFAULT_DIRECTION = Direction.NONE;
+        public const EDirection DefaultDirection = EDirection.None;
         
         /// Life of player.
         private int _life;
@@ -26,26 +26,26 @@ namespace vg.model.entity.dynamicEntity.player
         /// Alternative speed of Player with speed bonus improvement applied. It can be bigger or smaller than actual.
         /// This field keep saved direction and module of speed.
         /// </summary>
-        private Optional<V2D> speedImproved;
+        private V2D? _speedImproved;
 
         /// Current moving direction.
-        private Direction direction;
+        private EDirection _direction;
 
-        /// Previous moving direction excluded when NONE.
-        private Direction lastMovingDir;
+        /// Previous moving direction excluded when None.
+        private EDirection _lastMovingDir;
 
         /// Tail created by player while moves in map.
-        private ITail tail;
+        private ITail _tail;
         
         /// Player shield.
-        private Shield shield;
+        private Shield _shield;
 
-        private bool canShoot;
+        private bool _canShoot;
         
         /// <param name="position">starting position of player</param>
         /// <returns>Player with default life</returns>
         public static BasePlayer NewPlayer(V2D position) {
-            return new BasePlayer(position, PLAYER_MAX_LIFE, DEFAULT_PLAYER_SPEED, Shield.create(Shield.DEFAULT_DURATION, true));
+            return new BasePlayer(position, PlayerMaxLife, DefaultPlayerSpeed, Shield.Create(Shield.DefaultDuration, true));
         }
         
         /// <summary>
@@ -55,27 +55,27 @@ namespace vg.model.entity.dynamicEntity.player
         /// <param name="life">starting life of player</param>
         /// <returns>Player with user define position and life</returns>
         public static BasePlayer NewPlayer(V2D position, int life) {
-            int playerLife = life < 0 || life > PLAYER_MAX_LIFE ? PLAYER_MAX_LIFE : life;
+            int playerLife = life < 0 || life > PlayerMaxLife ? PlayerMaxLife : life;
             return new BasePlayer(position,
                     playerLife,
-                    DEFAULT_PLAYER_SPEED,
-                    Shield.create(Shield.DEFAULT_DURATION, true));
+                    DefaultPlayerSpeed,
+                    Shield.Create(Shield.DefaultDuration, true));
         }
 
         private BasePlayer(V2D position, int life, V2D speed, Shield shield) {
-            super(position, speed, DEFAULT_PLAYER_RADIUS, Shape.CIRCLE, MassTier.NOCOLLISION);
+            super(position, speed, DefaultPlayerRadius, Shape.CIRCLE, MassTier.NOCOLLISION);
             this._life = life;
-            this.tail = TailImpl.EmptyTail();
-            this.shield = shield;
-            this.canShoot = DEFAULT_SHOOT_CAPABILITY;
-            this.speedImproved = Optional.absent();
-            this.direction = DEFAULT_DIRECTION;
+            this._tail = TailImpl.EmptyTail();
+            this._shield = shield;
+            this._canShoot = DefaultShootCapability;
+            this._speedImproved = null;
+            this._direction = DefaultDirection;
         }
 
         public void DecLife() {
             this._life = this._life > 0 ? this._life - 1 : 0;
-            if (!this.shield.isActive()) {
-                this.shield = Shield.create((double) Shield.DEFAULT_DURATION/2, true);
+            if (!this._shield.IsActive()) {
+                this._shield = Shield.Create((double) Shield.DefaultDuration/2, true);
             }
         }
         
@@ -88,48 +88,48 @@ namespace vg.model.entity.dynamicEntity.player
         }
 
         public ITail GetTail() {
-            return this.tail;
+            return this._tail;
         }
 
         ITail IPlayer.GetTail()
         {
-            return this.tail;
+            return this._tail;
         }
 
         public void SetShield(Shield shield) {
-            this.shield = shield;
+            this._shield = shield;
         }
 
         public Shield GetShield() {
-            return this.shield;
+            return this._shield;
         }
 
-        public void ChangeDirection(Direction dir, bool isOnBorder) {
-            if (lastMovingDir == null) {
-                lastMovingDir = dir;
+        public void ChangeDirection(EDirection dir, bool isOnBorder) {
+            if (_lastMovingDir == null) {
+                _lastMovingDir = dir;
             }
-            if (!isOnBorder && ((lastMovingDir == Direction.DOWN && dir == Direction.UP)
-                    || (lastMovingDir == Direction.UP && dir == Direction.DOWN)
-                    || (lastMovingDir == Direction.LEFT && dir == Direction.RIGHT)
-                    || (lastMovingDir == Direction.RIGHT && dir == Direction.LEFT))
+            if (!isOnBorder && ((_lastMovingDir == EDirection.Down && dir == EDirection.Up)
+                    || (_lastMovingDir == EDirection.Up && dir == EDirection.Down)
+                    || (_lastMovingDir == EDirection.Left && dir == EDirection.Right)
+                    || (_lastMovingDir == EDirection.Right && dir == EDirection.Left))
             ) {
-                this.direction = Direction.NONE;
+                this._direction = EDirection.None;
             } else {
-                this.direction = dir;
-                if (dir != Direction.NONE) {
-                    lastMovingDir = dir;
+                this._direction = dir;
+                if (dir != EDirection.None) {
+                    _lastMovingDir = dir;
                 }
             }
         }
 
-        public Direction GetDirection()
+        public EDirection GetDirection()
         {
-            return this.direction;
+            return this._direction;
         }
         
         public void Move() {
-            V2D newPos = this.GetPosition().sum(this.GetSpeed().Mul(this.direction.GetVector()));
-            if (!this.tail.GetCoordinates().Contains(newPos)) {
+            V2D newPos = this.GetPosition().Sum(this.GetSpeed().Mul(Direction.GetVector(this._direction)));
+            if (!this._tail.GetCoordinates().Contains(newPos)) {
                 this.SetPosition(newPos);
             }
         }
@@ -140,31 +140,31 @@ namespace vg.model.entity.dynamicEntity.player
             * In order to not change direction of move by speed vector
             * is checked if coordinates are negative
             */
-            if (!this.speedImproved.isPresent() && speed.X >= 0 && speed.Y > 0) {
-                this.speedImproved = Optional.of(this.GetSpeed().Sum(speed));
+            if (!this._speedImproved.HasValue && speed.X >= 0 && speed.Y > 0) {
+                this._speedImproved = this.GetSpeed().Sum(speed);
             }
         }
         
         public void DisableSpeedUp() {
-            this.speedImproved = Optional.absent();
+            this._speedImproved = null;
         }
 
         public bool CanShoot() {
-            return this.canShoot;
+            return this._canShoot;
         }
         
         public void EnableShoot() {
-            this.canShoot = true;
+            this._canShoot = true;
         }
         
         public void DisableShoot() {
-            this.canShoot = false;
+            this._canShoot = false;
         }
 
         public V2D GetSpeed() {
             // if speedUp is set return it else return original speed
-            if (this.speedImproved.isPresent()) {
-                return speedImproved.get();
+            if (this._speedImproved.HasValue) {
+                return _speedImproved.Value;
             } else {
                 return super.GetSpeed();
             }
@@ -175,7 +175,6 @@ namespace vg.model.entity.dynamicEntity.player
             if (this.GetMassTier().compareTo(other) > MassTier.NOCOLLISION.ordinal()) {
                 DecLife();
             }
-
         }
 
     }

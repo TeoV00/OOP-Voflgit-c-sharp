@@ -12,7 +12,7 @@ public class V2DUtility
     public static List<V2D> GetVertex(List<V2D> coordinates) {
         List<V2D> vertex = new List<V2D>();
         if (coordinates.Count > 0) {
-            Direction prevDir = Direction.NONE;
+            EDirection prevDir = EDirection.None;
             V2D prev = coordinates[0];
             coordinates.RemoveAt(0);
             vertex.Add(prev);
@@ -20,7 +20,7 @@ public class V2DUtility
             {
                 //if prev direction and current are different, it means that
                 // direction changed so "next" V2D is a vector
-                Direction diffDir = V2DUtility.GetDirection(nextCoordinate.Diff(prev));
+                EDirection diffDir = V2DUtility.GetDirection(nextCoordinate.Diff(prev));
                 if (prevDir != diffDir) {
                     vertex.Add(nextCoordinate.Diff(nextCoordinate.Diff(prev)));
                     prevDir = diffDir;
@@ -37,18 +37,18 @@ public class V2DUtility
     /// </summary>
     /// <param name="vector">V2D vector where extract direction.</param>
     /// <returns>corresponding DIRECTION</returns>
-    public static Direction GetDirection(V2D vector) {
+    public static EDirection GetDirection(V2D vector) {
         V2D vec = vector.GetSingVector();
-        if (vec.Equals(Direction.DOWN.GetVector())) {
-            return Direction.DOWN;
-        } else if (vec.Equals(Direction.UP.GetVector())) {
-            return Direction.UP;
-        } else if (vec.Equals(Direction.LEFT.GetVector())) {
-            return Direction.LEFT;
-        } else if (vec.Equals(Direction.RIGHT.GetVector())) {
-            return Direction.RIGHT;
+        if (vec.Equals(Direction.GetVector(EDirection.Down))) {
+            return EDirection.Down;
+        } else if (vec.Equals(Direction.GetVector(EDirection.Up))) {
+            return EDirection.Up;
+        } else if (vec.Equals(Direction.GetVector(EDirection.Left))) {
+            return EDirection.Left;
+        } else if (vec.Equals(Direction.GetVector(EDirection.Right))) {
+            return EDirection.Right;
         } else {
-            return Direction.NONE;
+            return EDirection.None;
         }
     }
 }

@@ -62,13 +62,13 @@ namespace vg.model.entity.dynamicEntity.player
         /// </summary>
         /// <param name="direction">new direction</param>
         /// <param name="isOnBorder">flag if player is on border</param> 
-        void ChangeDirection(Direction direction, bool isOnBorder);
+        void ChangeDirection(EDirection direction, bool isOnBorder);
 
         /// <summary>
         /// Current player direction.
         /// </summary>
         /// <returns>Direction</returns>
-        Direction GetDirection();
+        EDirection GetDirection();
 
         /// <summary>
         /// Get player tail.
