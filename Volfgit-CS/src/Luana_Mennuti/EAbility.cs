@@ -7,19 +7,19 @@ public class EAbility
     /**
      * Score ability.
      */
-    private static readonly EAbility Score = new(PathImageMysteryBox.CoinScore);
+    public static readonly EAbility Score = new(PathImageMysteryBox.CoinScore);
     /**
      * Time ability.
      */
-    private static readonly EAbility FreezeTime = new(PathImageMysteryBox.CoinTime);
+    public static readonly EAbility FreezeTime = new(PathImageMysteryBox.CoinTime);
     /**
      * Speed ability.
      */
-    private static readonly EAbility SpeedUp = new(PathImageMysteryBox.CoinSpeed);
+    public static readonly EAbility SpeedUp = new(PathImageMysteryBox.CoinSpeed);
     /**
      * Kill mosquitoes ability.
      */
-    private static readonly EAbility KillAllMosquitoes = new(PathImageMysteryBox.CoinKillAllMoquetoes);
+    public static readonly EAbility KillAllMosquitoes = new(PathImageMysteryBox.CoinKillAllMoquetoes);
     
     private readonly string pathReveled;
     
